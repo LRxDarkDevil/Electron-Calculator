@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculator</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        .buttons {
+            grid-column: span 2;
+            background: transparent;
+            position: fixed;
+            top: 20px;
+            color: #fff;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .buttons::before {
+            background: linear-gradient(90deg, #1479c9, #ffffff5c);
+            border-left: 1px solid #fff4;
+            border-bottom: 1px solid #fff4;
+            border-top: 1px solid #fff4;
+        }
+
+        #dynamicContent {
+            text-align: left;
+        }
+        #dynamicContent p{
+          color: white;
+          font-size: 150%;
+          font-weight: 700;
+        }
+    </style>
+</head>
+<body>
+            <button class="buttons" style="left: 20px;" onclick="goBack()">&#8592; Back</button>
+            <button class="buttons" style="right: 20px;" onclick="clearHistory()">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-eraser-fill" viewBox="0 0 16 16">
+                    <path d="M8.086 2.207a2 2 0 0 1 2.828 0l3.879 3.879a2 2 0 0 1 0 2.828l-5.5 5.5A2 2 0 0 1 7.879 15H5.12a2 2 0 0 1-1.414-.586l-2.5-2.5a2 2 0 0 1 0-2.828l6.879-6.879zm.66 11.34L3.453 8.254 1.914 9.793a1 1 0 0 0 0 1.414l2.5 2.5a1 1 0 0 0 .707.293H7.88a1 1 0 0 0 .707-.293l.16-.16z"/>
+                  </svg>
+                Clear
+            </button>
+            <div id="dynamicContent"></div>
+
+    <script>
+        function goBack() {
+            window.history.back();
+        }
+        function clearHistory() {
+            localStorage.removeItem("history")
+            setTimeout(() => {
+                location.reload()
+            }, 500);
+            // console.log("clicked")
+        }
+        let history = JSON.parse(localStorage.getItem("history"));
+        document.addEventListener('DOMContentLoaded', function () {
+    var dynamicContent = document.getElementById('dynamicContent');
+
+    if (!history || history.length === 0) {
+        var pTag = document.createElement('p');
+        pTag.textContent = "No History";
+        dynamicContent.appendChild(pTag);
+    } else {
+        for (var i = 0; i < history.length; i++) {
+            var pTag = document.createElement('p');
+            pTag.textContent = history[i];
+            dynamicContent.appendChild(pTag);
+        }
+    }
+});
+
+        setInterval(() => {
+            history = JSON.parse(localStorage.getItem("history"));
+        }, 1000);
+    </script>
+</body>
+</html>
